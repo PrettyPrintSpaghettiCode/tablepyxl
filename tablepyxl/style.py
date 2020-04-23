@@ -219,7 +219,7 @@ class TableRow(Element):
 
 
 def element_to_string(el):
-    return _element_to_string(el).strip()
+    return _element_to_string(el)
 
 
 def _element_to_string(el):
@@ -228,8 +228,8 @@ def _element_to_string(el):
     for x in el.iterchildren():
         string += '\n' + _element_to_string(x)
 
-    text = el.text.strip() if el.text else ''
-    tail = el.tail.strip() if el.tail else ''
+    text = el.text if el.text else ''
+    tail = el.tail if el.tail else ''
 
     return text + string + '\n' + tail
 

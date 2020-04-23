@@ -66,6 +66,14 @@ def table_to_sheet(table, wb):
     ws = wb.create_sheet(title=table.element.get('name'))
     insert_table(table, ws, 1, 1)
 
+def toFile(filename, content):
+    '''
+    debug use, print to file
+    filename:   output filename
+    content:    output content
+    '''
+    with open(filename, 'w') as f:
+        f.write(content)
 
 def document_to_workbook(doc, wb=None, base_url=None):
     """
@@ -79,10 +87,13 @@ def document_to_workbook(doc, wb=None, base_url=None):
         wb.remove(wb.active)
 
     inline_styles_doc = Premailer(doc, base_url=base_url, remove_classes=False).transform()
+    # toFile(r'D:\GXG\_myScr\_py\htmlservices\inlinestyle.html',inline_styles_doc)
     tables = get_Tables(inline_styles_doc)
 
     for table in tables:
         table_to_sheet(table, wb)
+
+    wb.active = len(wb.sheetnames) - 1
 
     return wb
 
@@ -98,9 +109,9 @@ def document_to_xl(doc, filename, base_url=None):
 
 def insert_table(table, worksheet, column, row):
     if table.head:
-        row = write_rows(worksheet, table.head, row, column)
+        row += write_rows(worksheet, table.head, row, column)
     if table.body:
-        row = write_rows(worksheet, table.body, row, column)
+        row += write_rows(worksheet, table.body, row, column)
 
 
 def insert_table_at_cell(table, cell):
